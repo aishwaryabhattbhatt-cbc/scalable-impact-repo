@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBC/Radio-Canada Impact Repository</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cbc: {
+                            red: '#CC0000',
+                            darkRed: '#990000',
+                            dark: '#121212',
+                            charcoal: '#1A1A1E',
+                            lightBg: '#F4F5F7',
+                            cardBg: '#FFFFFF',
+                            accentBlue: '#0055A5'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .filter-chip {
+            border: 1px solid #d1d5db;
+            border-radius: 9999px;
+            background: #f3f4f6;
+            color: #4b5563;
+            padding: 0.25rem 0.625rem;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            line-height: 1rem;
+            transition: background-color 150ms, border-color 150ms, color 150ms;
+        }
+        .filter-chip:hover {
+            filter: brightness(0.96);
+        }
+        .filter-chip[data-filter="geoFilter"] {
+            border-color: #bfdbfe;
+            background: #eff6ff;
+            color: #0055a5;
+        }
+        .filter-chip[data-filter="geoFilter"][aria-pressed="true"] {
+            border-color: #0055a5;
+            background: #0055a5;
+            color: #fff;
+        }
+        .filter-chip[data-filter="pillarFilter"][data-value="Proximity"] {
+            border-color: #fecaca;
+            background: #fee2e2;
+            color: #cc0000;
+        }
+        .filter-chip[data-filter="pillarFilter"][data-value="Proximity"][aria-pressed="true"] {
+            background: #cc0000;
+            border-color: #cc0000;
+            color: #fff;
+        }
+        .filter-chip[data-filter="pillarFilter"][data-value="Bringing People Together"] {
+            border-color: #bfdbfe;
+            background: #dbeafe;
+            color: #0055a5;
+        }
+        .filter-chip[data-filter="pillarFilter"][data-value="Bringing People Together"][aria-pressed="true"] {
+            background: #0055a5;
+            border-color: #0055a5;
+            color: #fff;
+        }
+        .filter-chip[data-filter="pillarFilter"][data-value="Digital Agility"] {
+            border-color: #a7f3d0;
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .filter-chip[data-filter="pillarFilter"][data-value="Digital Agility"][aria-pressed="true"] {
+            background: #047857;
+            border-color: #047857;
+            color: #fff;
+        }
+        .filter-chip[data-filter="pillarFilter"][data-value="All"] {
+            border-color: #d1d5db;
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+        .filter-chip[data-filter="pillarFilter"][data-value="All"][aria-pressed="true"] {
+            border-color: #cc0000;
+            background: #cc0000;
+            color: #fff;
+        }
+        .filter-chip[data-filter="contentFilter"][aria-pressed="true"] {
+            background: #374151;
+            border-color: #374151;
+            color: #fff;
+        }
+        .filter-chip:focus-visible {
+            outline: 2px solid #cc0000;
+            outline-offset: 2px;
+        }
+        .story-chip {
+            display: inline-flex;
+            height: 26px;
+            align-items: center;
+            white-space: nowrap;
+            border-radius: 9999px;
+            padding: 0 0.625rem;
+            font-size: 0.6875rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-cbc-lightBg font-sans text-gray-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Corporate Header -->
+    <header class="bg-cbc-dark text-white border-b-4 border-cbc-red sticky top-0 z-30 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="CBC_Logo.webp" alt="CBC/Radio-Canada" class="h-10 w-auto max-w-[120px] object-contain">
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        Impact Repository
+                    </h1>
+                    <p class="text-xs text-gray-400">Searchable Knowledge Base & Value Pipeline • CBC/Radio-Canada</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col items-start gap-1 w-full xl:w-auto">
+                <span class="text-xs font-semibold text-white">Stories</span>
+                <div class="flex flex-wrap items-center gap-2 w-full xl:w-auto">
+                    <div class="bg-gray-100 border border-gray-300 px-2 py-1 rounded-lg flex items-center gap-1.5">
+                        <div class="w-6 h-6 rounded-md bg-red-100 text-cbc-red flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <div class="flex items-baseline gap-1.5">
+                            <span id="statProximity" class="text-lg font-extrabold text-gray-900 leading-none">0</span>
+                            <span class="text-[9px] font-medium text-gray-600 uppercase tracking-wider">Proximity</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 border border-gray-300 px-2 py-1 rounded-lg flex items-center gap-1.5">
+                        <div class="w-6 h-6 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-laptop"></i>
+                        </div>
+                        <div class="flex items-baseline gap-1.5">
+                            <span id="statDigitalAgility" class="text-lg font-extrabold text-gray-900 leading-none">0</span>
+                            <span class="text-[9px] font-medium text-gray-600 uppercase tracking-wider">Digital Agility</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 border border-gray-300 px-2 py-1 rounded-lg flex items-center gap-1.5">
+                        <div class="w-6 h-6 rounded-md bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-people-group"></i>
+                        </div>
+                        <div class="flex items-baseline gap-1.5">
+                            <span id="statPeopleTogether" class="text-lg font-extrabold text-gray-900 leading-none">0</span>
+                            <span class="text-[9px] font-medium text-gray-600 uppercase tracking-wider">Bringing People Together</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+        <!-- Search & Filter Controls Bar -->
+        <section class="space-y-2">
+            <!-- Search Bar -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                <div class="relative w-full lg:flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="searchInput" oninput="applyFilters()" placeholder="Search stories, geography, impact, or problem..." class="w-full h-10 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cbc-red focus:border-cbc-red text-sm outline-none transition-all">
+                </div>
+
+                <!-- Results and Filters -->
+                <div class="flex items-center justify-between lg:justify-end w-full lg:w-auto gap-2">
+                    <button id="filterToggle" type="button" onclick="toggleFilterPanel()" aria-expanded="false" aria-controls="filterPanel" class="h-10 px-2.5 text-xs font-semibold text-gray-600 hover:text-gray-900 bg-white border border-gray-300 rounded-lg transition-colors flex items-center gap-1.5">
+                        <i class="fa-solid fa-sliders"></i> Filters
+                        <span id="activeFilterCount" class="hidden min-w-4 rounded-full bg-cbc-red px-1 text-center text-[10px] text-white">0</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="filterPanel" class="hidden flex-col gap-2.5 p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-3">
+                    <span class="w-28 shrink-0 pt-1 text-[11px] font-bold text-gray-600">Geography</span>
+                    <div class="flex flex-wrap gap-1.5" role="group" aria-label="Filter by geography">
+                        <button type="button" data-filter="geoFilter" data-value="All" aria-pressed="true" onclick="setFilter('geoFilter', 'All')" class="filter-chip">All locations</button>
+                        <button type="button" data-filter="geoFilter" data-value="Local" aria-pressed="false" onclick="setFilter('geoFilter', 'Local')" class="filter-chip">Local</button>
+                        <button type="button" data-filter="geoFilter" data-value="Regional" aria-pressed="false" onclick="setFilter('geoFilter', 'Regional')" class="filter-chip">Regional</button>
+                        <button type="button" data-filter="geoFilter" data-value="National" aria-pressed="false" onclick="setFilter('geoFilter', 'National')" class="filter-chip">National</button>
+                        <button type="button" data-filter="geoFilter" data-value="International" aria-pressed="false" onclick="setFilter('geoFilter', 'International')" class="filter-chip">International</button>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-3">
+                    <span class="w-28 shrink-0 pt-1 text-[11px] font-bold text-gray-600">Strategic pillar</span>
+                    <div class="flex flex-wrap gap-1.5" role="group" aria-label="Filter by strategic pillar">
+                        <button type="button" data-filter="pillarFilter" data-value="All" aria-pressed="true" onclick="setFilter('pillarFilter', 'All')" class="filter-chip">All pillars</button>
+                        <button type="button" data-filter="pillarFilter" data-value="Proximity" aria-pressed="false" onclick="setFilter('pillarFilter', 'Proximity')" class="filter-chip">Proximity</button>
+                        <button type="button" data-filter="pillarFilter" data-value="Bringing People Together" aria-pressed="false" onclick="setFilter('pillarFilter', 'Bringing People Together')" class="filter-chip">Bringing People Together</button>
+                        <button type="button" data-filter="pillarFilter" data-value="Digital Agility" aria-pressed="false" onclick="setFilter('pillarFilter', 'Digital Agility')" class="filter-chip">Digital Agility</button>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-3">
+                    <span class="w-28 shrink-0 pt-1 text-[11px] font-bold text-gray-600">Content area</span>
+                    <div class="flex flex-wrap gap-1.5" role="group" aria-label="Filter by content area">
+                        <button type="button" data-filter="contentFilter" data-value="All" aria-pressed="true" onclick="setFilter('contentFilter', 'All')" class="filter-chip">All areas</button>
+                        <button type="button" data-filter="contentFilter" data-value="Local News" aria-pressed="false" onclick="setFilter('contentFilter', 'Local News')" class="filter-chip">Local News</button>
+                        <button type="button" data-filter="contentFilter" data-value="National / Regional News" aria-pressed="false" onclick="setFilter('contentFilter', 'National / Regional News')" class="filter-chip">National / Regional News</button>
+                        <button type="button" data-filter="contentFilter" data-value="The North" aria-pressed="false" onclick="setFilter('contentFilter', 'The North')" class="filter-chip">The North</button>
+                        <button type="button" data-filter="contentFilter" data-value="International News" aria-pressed="false" onclick="setFilter('contentFilter', 'International News')" class="filter-chip">International News</button>
+                        <button type="button" data-filter="contentFilter" data-value="Sports" aria-pressed="false" onclick="setFilter('contentFilter', 'Sports')" class="filter-chip">Sports</button>
+                        <button type="button" data-filter="contentFilter" data-value="Eurovision" aria-pressed="false" onclick="setFilter('contentFilter', 'Eurovision')" class="filter-chip">Eurovision</button>
+                        <button type="button" data-filter="contentFilter" data-value="Other" aria-pressed="false" onclick="setFilter('contentFilter', 'Other')" class="filter-chip">Other</button>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="geoFilter" value="All">
+            <input type="hidden" id="pillarFilter" value="All">
+            <input type="hidden" id="contentFilter" value="All">
+        </section>
+        <div class="text-xs font-semibold text-gray-500">
+            <span id="resultsCount">Showing 0 entries</span>
+        </div>
+
+        <!-- Card Grid View Container -->
+        <section id="cardContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamic Impact Cards Render Here -->
+        </section>
+
+        <!-- Empty State -->
+        <div id="noResultsState" class="hidden text-center py-16 bg-white rounded-xl border border-gray-200">
+            <i class="fa-solid fa-location-dot text-4xl text-gray-300 mb-3"></i>
+            <h3 class="text-base font-bold text-gray-800">No matching impact stories found</h3>
+            <p class="text-xs text-gray-500 mt-1">Try broadening your geographic search or resetting your pillar filters.</p>
+        </div>
+    </main>
+
+    <!-- Interactive Detail Modal Popup -->
+    <div id="detailModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            
+            <!-- Modal Header -->
+            <div class="p-6 bg-cbc-dark text-white border-b-4 border-cbc-red flex justify-between items-start">
+                <div class="space-y-2 max-w-2xl">
+                    <h2 id="modalTitle" class="text-xl sm:text-2xl font-black leading-snug">Project Name</h2>
+                    <p class="text-xs text-gray-300">
+                        <span class="font-bold text-white">Lead Contact(s):</span>
+                        <span id="modalContacts">Contacts</span>
+                    </p>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span id="modalGeoBadge" class="story-chip bg-blue-50 text-cbc-accentBlue border border-blue-200 font-bold gap-1">
+                            <i class="fa-solid fa-location-dot"></i><span id="modalGeoText">Geography</span>
+                        </span>
+                        <span id="modalPillarBadge" class="story-chip font-bold">
+                            <i id="modalPillarIcon" class="mr-1"></i><span id="modalPillarText">Pillar</span>
+                        </span>
+                        <span id="modalCategoryBadge" class="story-chip font-bold bg-gray-100 text-gray-700 border border-gray-200">
+                            Category
+                        </span>
+                    </div>
+                </div>
+                <button onclick="toggleModal('detailModal')" class="text-gray-400 hover:text-white text-xl p-1 rounded-lg transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body Content -->
+            <div class="p-6 space-y-6 overflow-y-auto custom-scrollbar text-sm">
+                
+                <!-- HERO IMPACT SECTION (Quantitative vs Qualitative Side-by-Side) -->
+                <div>
+                    <h3 class="text-xs font-extrabold text-gray-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-bolt text-cbc-red"></i> Verified Impact Breakdown
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Quantitative Impact Box -->
+                        <div class="bg-emerald-50/80 border border-emerald-200 p-4 rounded-xl space-y-1.5">
+                            <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1">
+                                <i class="fa-solid fa-hashtag"></i> Tangible / Quantitative Impact
+                            </span>
+                            <p id="modalQuantImpact" class="text-xs text-gray-900 font-semibold leading-relaxed">
+                                Hard numbers, stats, or audience metrics...
+                            </p>
+                        </div>
+
+                        <!-- Qualitative Impact Box -->
+                        <div class="bg-blue-50/80 border border-blue-200 p-4 rounded-xl space-y-1.5">
+                            <span class="text-xs font-bold text-blue-800 uppercase tracking-wider flex items-center gap-1">
+                                <i class="fa-solid fa-heart"></i> Intangible / Qualitative Impact
+                            </span>
+                            <p id="modalQualImpact" class="text-xs text-gray-900 font-semibold leading-relaxed">
+                                Community trust, partnerships, policy changes...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Executive Summary & Problem Addressed Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-1">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block">Executive Summary</span>
+                        <p id="modalSummary" class="text-xs text-gray-800 leading-relaxed">
+                            Project summary description...
+                        </p>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-1">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block">The Problem Addressed</span>
+                        <p id="modalProblem" class="text-xs text-gray-800 leading-relaxed">
+                            Community gap or public need addressed...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Key Deliverables & Output Links -->
+                <div>
+                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Key Deliverables & Published Media</span>
+                    <div id="modalLinks" class="space-y-1.5 bg-gray-50 p-3.5 rounded-xl border border-gray-200 text-xs">
+                        <!-- Links render dynamically -->
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add Entry Modal Form (Matching Exact 10 Fields) -->
+    <div id="addSubmissionModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-5 bg-cbc-dark text-white border-b-4 border-cbc-red flex justify-between items-center">
+                <div>
+                    <h3 class="font-black text-lg"><i class="fa-solid fa-square-plus text-cbc-red mr-2"></i>Add New Impact Submission</h3>
+                    <p class="text-xs text-gray-400">Enter project details matching the 10 core repository fields.</p>
+                </div>
+                <button onclick="toggleModal('addSubmissionModal')" class="text-gray-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form onsubmit="handleNewSubmission(event)" class="p-6 space-y-4 overflow-y-auto custom-scrollbar text-xs">
+                
+                <!-- 1. Project Name -->
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">1. Project Name *</label>
+                    <input type="text" id="newProjectName" required placeholder="e.g. Wadin Bay Wildfire Coverage" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red">
+                </div>
+
+                <!-- 2. Contacts -->
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">2. Primary Contact(s) *</label>
+                    <input type="text" id="newContacts" required placeholder="e.g. Project Lead, Regional News Team" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red">
+                </div>
+
+                <!-- 3 & 4. Strategic Pillar & Content Area -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">3. Strategic Pillar *</label>
+                        <select id="newPillar" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red bg-white">
+                            <option value="Proximity">Proximity</option>
+                            <option value="Bringing People Together">Bringing People Together</option>
+                            <option value="Digital Agility">Digital Agility</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">4. Content Area *</label>
+                        <select id="newContentArea" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red bg-white">
+                            <option value="Local News">Local News</option>
+                            <option value="National / Regional News">National / Regional News</option>
+                            <option value="The North">The North</option>
+                            <option value="International News">International News</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Eurovision">Eurovision</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 5. Impacted Geography -->
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">5. Impacted Geography (Level & Name) *</label>
+                    <input type="text" id="newGeography" required placeholder="e.g. Local: Yellowknife NWT | Regional: Atlantic Canada | National: Canada-wide" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red">
+                </div>
+
+                <!-- 6. Executive Summary -->
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">6. Executive Summary (2-3 sentences) *</label>
+                    <textarea id="newSummary" rows="2" required placeholder="Summarize the initiative and core accomplishment..." class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red"></textarea>
+                </div>
+
+                <!-- 7. The Problem Addressed -->
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">7. The Problem Addressed *</label>
+                    <textarea id="newProblem" rows="2" required placeholder="What community gap, public need, or operational challenge did this solve?" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red"></textarea>
+                </div>
+
+                <!-- 8. Deliverables & Links -->
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">8. Key Deliverables & Output Links *</label>
+                    <input type="text" id="newDeliverables" required placeholder="https://www.cbc.ca/news/example-story" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red">
+                </div>
+
+                <!-- 9 & 10. Quantitative vs Qualitative Impact -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">9. Quantitative Impact (Stats/Reach) *</label>
+                        <textarea id="newQuant" rows="2" required placeholder="e.g. 650k unique readers, $450k grant secured, 120k views" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red"></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">10. Qualitative Impact (Trust/Policy) *</label>
+                        <textarea id="newQual" rows="2" required placeholder="e.g. Deepened community trust, policy shift in assembly..." class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red"></textarea>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-2 pt-3 border-t border-gray-100">
+                    <button type="button" onclick="toggleModal('addSubmissionModal')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-bold">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-cbc-red hover:bg-cbc-darkRed text-white rounded-lg font-bold">Submit Impact Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-cbc-dark text-gray-400 text-xs py-6 border-t border-gray-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-1">
+            <p>© CBC/Radio-Canada. Internal Impact Awards & Knowledge Repository.</p>
+            <p class="text-gray-500">Structured for clean Google Sheets data export and filterable reporting.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Pre-loaded realistic sample data with GEOGRAPHY and QUANTITATIVE IMPACT as primary heroes
+        let repositoryData = [
+            {
+                id: "CBC-2026-001",
+                projectName: "North of 60: Northern Canada Climate Resilience Series",
+                contacts: "Project Lead, Northern News Team",
+                pillar: "Proximity",
+                contentArea: "The North",
+                geography: "Local: Yellowknife, NWT",
+                summary: "A three-week on-ground investigative reporting initiative documenting severe infrastructure risks caused by permafrost thawing across fly-in Arctic settlements.",
+                problem: "Isolated northern communities lacked accessible, localized reporting on permafrost degradation risks and traditional ecological adaptation strategies.",
+                deliverables: "https://www.cbc.ca/news/canada/north/example-climate-series-2026",
+                quantImpact: "650,000 unique digital readers; 120,000 video views; $450,000 territorial grant committed for community permafrost monitoring.",
+                qualImpact: "Deepened Indigenous community trust in 3 fly-in towns; territorial legislative assembly referenced reporting during policy debates."
+            },
+            {
+                id: "CBC-2026-002",
+                projectName: "Canada Reads 2026: Cross-Cultural National Broadcast",
+                contacts: "Project Lead, Production Team",
+                pillar: "Bringing People Together",
+                contentArea: "National / Regional News",
+                geography: "National: Canada-wide",
+                summary: "A coast-to-coast multi-platform literary debate unifying diverse Canadian voices around shared national narratives and cross-cultural literature.",
+                problem: "National cultural conversations often struggle to reach younger digital demographics across disparate geographical regions simultaneously.",
+                deliverables: "https://www.cbc.ca/books/canadareads-example-2026",
+                quantImpact: "1,200,000 live broadcast listeners; 18,000 books sold nationally within 14 days of broadcast.",
+                qualImpact: "Fostered nationwide cross-cultural dialogue; established 15 independent library discussion hubs in rural municipalities."
+            },
+            {
+                id: "CBC-2026-003",
+                projectName: "Atlantic Wildfire Emergency Coverage & Relief Portal",
+                contacts: "Project Lead, Atlantic News Team",
+                pillar: "Proximity",
+                contentArea: "Local News",
+                geography: "Regional: Atlantic Canada",
+                summary: "Real-time emergency broadcast, interactive evacuation mapping, and localized community radio safety alerts during record regional forest fires.",
+                problem: "Fast-moving wildfire threats created severe information voids and evacuation route confusion across rural Atlantic communities.",
+                deliverables: "https://www.cbc.ca/news/canada/nova-scotia/example-wildfire-live",
+                quantImpact: "2,400,000 emergency portal pageviews; 85,000 active app users receiving push alerts in emergency zones.",
+                qualImpact: "Provided critical life-safety guidance credited by local emergency commanders for facilitating smooth municipal evacuations."
+            },
+            {
+                id: "CBC-2026-004",
+                projectName: "AI-Driven Multi-Language Captioning & Dialect Pilot",
+                contacts: "Project Lead, Digital Strategy Team",
+                pillar: "Digital Agility",
+                contentArea: "Other",
+                geography: "National: Canada-wide",
+                summary: "Automated real-time speech-to-text platform accelerating regional news accessibility across Indigenous languages and official bilingual broadcasts.",
+                problem: "High cost and operational latency in providing real-time accessible captions for fast-breaking regional news broadcasts.",
+                deliverables: "https://www.cbc.ca/digital/tech-demo-captioning",
+                quantImpact: "Reduced translation turnaround by 40% across 8 regional news hubs; 94% verified captioning accuracy rate.",
+                qualImpact: "Significantly enhanced accessibility for hearing-impaired audiences and expanded multi-lingual regional audience reach."
+            },
+            {
+                id: "CBC-2026-005",
+                projectName: "Eurovision 2026 Mobile-First Cultural Experience",
+                contacts: "Project Lead, Entertainment and Sports Team",
+                pillar: "Digital Agility",
+                contentArea: "Eurovision",
+                geography: "International: Europe / Global",
+                summary: "Vertical video streaming series giving Canadian viewers exclusive technical production breakdowns and artist perspectives from Geneva.",
+                problem: "Traditional broadcast formats failed to engage younger mobile audiences seeking interactive, short-form event coverage.",
+                deliverables: "https://www.cbc.ca/pop/eurovision-2026-feature",
+                quantImpact: "3,100,000 social video views; 68% audience engagement rate among 18-34 year olds.",
+                qualImpact: "Established digital engagement blueprints for adapting international event coverage to next-generation Canadian streaming audiences."
+            }
+        ];
+
+        // Render Repository UI
+        function renderRepository(data) {
+            const cardContainer = document.getElementById('cardContainer');
+            const noResultsState = document.getElementById('noResultsState');
+            const resultsCount = document.getElementById('resultsCount');
+
+            resultsCount.innerText = `Showing ${data.length} entries`;
+            updateHeroStats(repositoryData);
+
+            if (data.length === 0) {
+                cardContainer.innerHTML = '';
+                noResultsState.classList.remove('hidden');
+                return;
+            } else {
+                noResultsState.classList.add('hidden');
+            }
+
+            // Render story cards
+            cardContainer.innerHTML = data.map(item => `
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all flex flex-col justify-between overflow-hidden group">
+                    <div class="p-5 space-y-3.5">
+
+                        <!-- Project Title -->
+                        <h3 class="font-bold text-gray-900 text-sm leading-snug group-hover:text-cbc-red transition-colors">
+                            ${item.projectName}
+                        </h3>
+
+                        <!-- Tangible Impact -->
+                        <div class="bg-emerald-50/80 border border-emerald-200 p-3 rounded-lg">
+                            <span class="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wider block mb-0.5">
+                                <i class="fa-solid fa-chart-line text-emerald-600"></i> Tangible Impact
+                            </span>
+                            <p class="text-xs font-bold text-gray-900 line-clamp-2 leading-snug">
+                                ${item.quantImpact}
+                            </p>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                            ${item.summary}
+                        </p>
+
+                        <!-- Story Metadata Chips -->
+                        <div class="flex flex-wrap items-center justify-start gap-1.5">
+                            <span class="story-chip bg-blue-50 text-cbc-accentBlue border border-blue-200 font-bold gap-1">
+                                <i class="fa-solid fa-location-dot"></i> ${item.geography}
+                            </span>
+                            <span class="story-chip font-bold ${getPillarBadgeStyle(item.pillar)}">
+                                <i class="${getPillarIcon(item.pillar)} mr-1"></i>${item.pillar}
+                            </span>
+                            <span class="story-chip font-bold bg-gray-100 text-gray-700 border border-gray-200">
+                                ${item.contentArea}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer Action -->
+                    <div class="px-5 py-3 bg-gray-50 border-t border-gray-100 flex items-center justify-end">
+                        <button onclick="openDetailModal('${item.id}')" class="text-xs font-bold text-cbc-red hover:text-cbc-darkRed transition-colors flex items-center gap-1">
+                            Full Impact Breakdown <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+        }
+
+        // Helper styling for Strategic Pillars
+        function getPillarBadgeStyle(pillar) {
+            switch(pillar) {
+                case 'Proximity': return 'bg-red-100 text-cbc-red border border-red-200';
+                case 'Bringing People Together': return 'bg-blue-100 text-cbc-accentBlue border border-blue-200';
+                case 'Digital Agility': return 'bg-emerald-100 text-emerald-800 border border-emerald-200';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        function getPillarIcon(pillar) {
+            switch(pillar) {
+                case 'Proximity': return 'fa-solid fa-bullseye';
+                case 'Bringing People Together': return 'fa-solid fa-people-group';
+                case 'Digital Agility': return 'fa-solid fa-laptop';
+                default: return 'fa-solid fa-layer-group';
+            }
+        }
+
+        // Hero Stats Calculator
+        function updateHeroStats(data) {
+            const pillarCounts = data.reduce((counts, item) => {
+                counts[item.pillar] = (counts[item.pillar] || 0) + 1;
+                return counts;
+            }, {});
+
+            document.getElementById('statProximity').innerText = pillarCounts['Proximity'] || 0;
+            document.getElementById('statPeopleTogether').innerText = pillarCounts['Bringing People Together'] || 0;
+            document.getElementById('statDigitalAgility').innerText = pillarCounts['Digital Agility'] || 0;
+
+        }
+
+        // Search & Multi-Filter Logic
+        function setFilter(filterId, value) {
+            document.getElementById(filterId).value = value;
+            document.querySelectorAll(`[data-filter="${filterId}"]`).forEach(button => {
+                const selected = button.dataset.value === value;
+                button.setAttribute('aria-pressed', String(selected));
+            });
+            updateActiveFilterCount();
+            applyFilters();
+        }
+
+        function toggleFilterPanel() {
+            const panel = document.getElementById('filterPanel');
+            const toggle = document.getElementById('filterToggle');
+            const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+            panel.classList.toggle('hidden', isExpanded);
+            panel.classList.toggle('flex', !isExpanded);
+            toggle.setAttribute('aria-expanded', String(!isExpanded));
+        }
+
+        function updateActiveFilterCount() {
+            const activeCount = ['geoFilter', 'pillarFilter', 'contentFilter']
+                .filter(filterId => document.getElementById(filterId).value !== 'All')
+                .length;
+            const badge = document.getElementById('activeFilterCount');
+            badge.textContent = activeCount;
+            badge.classList.toggle('hidden', activeCount === 0);
+        }
+
+        function applyFilters() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const geoVal = document.getElementById('geoFilter').value;
+            const pillarVal = document.getElementById('pillarFilter').value;
+            const contentVal = document.getElementById('contentFilter').value;
+
+            const filtered = repositoryData.filter(item => {
+                const matchesSearch = 
+                    item.projectName.toLowerCase().includes(searchVal) ||
+                    item.geography.toLowerCase().includes(searchVal) ||
+                    item.quantImpact.toLowerCase().includes(searchVal) ||
+                    item.qualImpact.toLowerCase().includes(searchVal) ||
+                    item.problem.toLowerCase().includes(searchVal) ||
+                    item.contacts.toLowerCase().includes(searchVal);
+
+                const matchesGeo = (geoVal === 'All') || item.geography.startsWith(geoVal);
+                const matchesPillar = (pillarVal === 'All') || (item.pillar === pillarVal);
+                const matchesContent = (contentVal === 'All') || (item.contentArea === contentVal);
+
+                return matchesSearch && matchesGeo && matchesPillar && matchesContent;
+            });
+
+            renderRepository(filtered);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('geoFilter').value = 'All';
+            document.getElementById('pillarFilter').value = 'All';
+            document.getElementById('contentFilter').value = 'All';
+            document.querySelectorAll('.filter-chip').forEach(button => {
+                button.setAttribute('aria-pressed', String(button.dataset.value === 'All'));
+            });
+            updateActiveFilterCount();
+            renderRepository(repositoryData);
+        }
+
+        // Modal Controls
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+
+        function openDetailModal(id) {
+            const item = repositoryData.find(entry => entry.id === id);
+            if (!item) return;
+
+            document.getElementById('modalTitle').innerText = item.projectName;
+            document.getElementById('modalGeoText').innerText = item.geography;
+            
+            document.getElementById('modalPillarText').innerText = item.pillar;
+            document.getElementById('modalPillarIcon').className = `${getPillarIcon(item.pillar)} mr-1`;
+            document.getElementById('modalPillarBadge').className = `story-chip font-bold ${getPillarBadgeStyle(item.pillar)}`;
+            
+            document.getElementById('modalCategoryBadge').innerText = item.contentArea;
+            document.getElementById('modalQuantImpact').innerText = item.quantImpact;
+            document.getElementById('modalQualImpact').innerText = item.qualImpact;
+            
+            document.getElementById('modalSummary').innerText = item.summary;
+            document.getElementById('modalProblem').innerText = item.problem;
+            document.getElementById('modalContacts').innerText = item.contacts;
+
+            // Render Deliverables Links
+            const linksContainer = document.getElementById('modalLinks');
+            if (item.deliverables.startsWith('http')) {
+                linksContainer.innerHTML = `
+                    <a href="${item.deliverables}" target="_blank" class="text-cbc-accentBlue font-semibold hover:underline flex items-center gap-1.5 truncate">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> ${item.deliverables}
+                    </a>
+                `;
+            } else {
+                linksContainer.innerHTML = `<span class="text-gray-600 font-medium">${item.deliverables}</span>`;
+            }
+
+            toggleModal('detailModal');
+        }
+
+        // Handle Add Submission Modal Form
+        function handleNewSubmission(event) {
+            event.preventDefault();
+
+            const newEntry = {
+                id: `CBC-2026-00${repositoryData.length + 1}`,
+                projectName: document.getElementById('newProjectName').value,
+                contacts: document.getElementById('newContacts').value,
+                pillar: document.getElementById('newPillar').value,
+                contentArea: document.getElementById('newContentArea').value,
+                geography: document.getElementById('newGeography').value,
+                summary: document.getElementById('newSummary').value,
+                problem: document.getElementById('newProblem').value,
+                deliverables: document.getElementById('newDeliverables').value,
+                quantImpact: document.getElementById('newQuant').value,
+                qualImpact: document.getElementById('newQual').value
+            };
+
+            repositoryData.unshift(newEntry);
+            applyFilters();
+            toggleModal('addSubmissionModal');
+            event.target.reset();
+        }
+
+        // On Page Load Initialization
+        window.onload = function() {
+            renderRepository(repositoryData);
+        };
+    </script>
+</body>
+</html>
