@@ -122,12 +122,15 @@
         .story-chip {
             display: inline-flex;
             height: 26px;
+            max-width: 100%;
             align-items: center;
             white-space: nowrap;
             border-radius: 9999px;
             padding: 0 0.625rem;
             font-size: 0.6875rem;
             line-height: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
@@ -210,6 +213,8 @@
                         <button type="button" data-filter="geoFilter" data-value="Regional" aria-pressed="false" onclick="setFilter('geoFilter', 'Regional')" class="filter-chip">Regional</button>
                         <button type="button" data-filter="geoFilter" data-value="National" aria-pressed="false" onclick="setFilter('geoFilter', 'National')" class="filter-chip">National</button>
                         <button type="button" data-filter="geoFilter" data-value="International" aria-pressed="false" onclick="setFilter('geoFilter', 'International')" class="filter-chip">International</button>
+                        <button type="button" data-filter="geoFilter" data-value="Northern / Remote" aria-pressed="false" onclick="setFilter('geoFilter', 'Northern / Remote')" class="filter-chip">Northern / Remote</button>
+                        <button type="button" data-filter="geoFilter" data-value="Digital" aria-pressed="false" onclick="setFilter('geoFilter', 'Digital')" class="filter-chip">Digital</button>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-3">
@@ -222,16 +227,14 @@
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-3">
-                    <span class="w-28 shrink-0 pt-1 text-[11px] font-bold text-gray-600">Content area</span>
-                    <div class="flex flex-wrap gap-1.5" role="group" aria-label="Filter by content area">
-                        <button type="button" data-filter="contentFilter" data-value="All" aria-pressed="true" onclick="setFilter('contentFilter', 'All')" class="filter-chip">All areas</button>
-                        <button type="button" data-filter="contentFilter" data-value="Local News" aria-pressed="false" onclick="setFilter('contentFilter', 'Local News')" class="filter-chip">Local News</button>
-                        <button type="button" data-filter="contentFilter" data-value="National / Regional News" aria-pressed="false" onclick="setFilter('contentFilter', 'National / Regional News')" class="filter-chip">National / Regional News</button>
-                        <button type="button" data-filter="contentFilter" data-value="The North" aria-pressed="false" onclick="setFilter('contentFilter', 'The North')" class="filter-chip">The North</button>
+                    <span class="w-28 shrink-0 pt-1 text-[11px] font-bold text-gray-600">Investment area</span>
+                    <div class="flex flex-wrap gap-1.5" role="group" aria-label="Filter by investment area">
+                        <button type="button" data-filter="contentFilter" data-value="All" aria-pressed="true" onclick="setFilter('contentFilter', 'All')" class="filter-chip">All investment areas</button>
                         <button type="button" data-filter="contentFilter" data-value="International News" aria-pressed="false" onclick="setFilter('contentFilter', 'International News')" class="filter-chip">International News</button>
+                        <button type="button" data-filter="contentFilter" data-value="Local News" aria-pressed="false" onclick="setFilter('contentFilter', 'Local News')" class="filter-chip">Local News</button>
+                        <button type="button" data-filter="contentFilter" data-value="The North" aria-pressed="false" onclick="setFilter('contentFilter', 'The North')" class="filter-chip">The North</button>
                         <button type="button" data-filter="contentFilter" data-value="Sports" aria-pressed="false" onclick="setFilter('contentFilter', 'Sports')" class="filter-chip">Sports</button>
                         <button type="button" data-filter="contentFilter" data-value="Eurovision" aria-pressed="false" onclick="setFilter('contentFilter', 'Eurovision')" class="filter-chip">Eurovision</button>
-                        <button type="button" data-filter="contentFilter" data-value="Other" aria-pressed="false" onclick="setFilter('contentFilter', 'Other')" class="filter-chip">Other</button>
                     </div>
                 </div>
             </div>
@@ -272,11 +275,9 @@
                         <span id="modalGeoBadge" class="story-chip bg-blue-50 text-cbc-accentBlue border border-blue-200 font-bold gap-1">
                             <i class="fa-solid fa-location-dot"></i><span id="modalGeoText">Geography</span>
                         </span>
-                        <span id="modalPillarBadge" class="story-chip font-bold">
-                            <i id="modalPillarIcon" class="mr-1"></i><span id="modalPillarText">Pillar</span>
-                        </span>
+                        <span id="modalPillarBadges" class="contents"></span>
                         <span id="modalCategoryBadge" class="story-chip font-bold bg-gray-100 text-gray-700 border border-gray-200">
-                            Category
+                            Investment Area
                         </span>
                     </div>
                 </div>
@@ -297,7 +298,7 @@
                         <!-- Quantitative Impact Box -->
                         <div class="bg-emerald-50/80 border border-emerald-200 p-4 rounded-xl space-y-1.5">
                             <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1">
-                                <i class="fa-solid fa-hashtag"></i> Tangible / Quantitative Impact
+                                <i class="fa-solid fa-hashtag"></i> Tangible Impact
                             </span>
                             <p id="modalQuantImpact" class="text-xs text-gray-900 font-semibold leading-relaxed">
                                 Hard numbers, stats, or audience metrics...
@@ -307,7 +308,7 @@
                         <!-- Qualitative Impact Box -->
                         <div class="bg-blue-50/80 border border-blue-200 p-4 rounded-xl space-y-1.5">
                             <span class="text-xs font-bold text-blue-800 uppercase tracking-wider flex items-center gap-1">
-                                <i class="fa-solid fa-heart"></i> Intangible / Qualitative Impact
+                                <i class="fa-solid fa-heart"></i> Intangible Impact
                             </span>
                             <p id="modalQualImpact" class="text-xs text-gray-900 font-semibold leading-relaxed">
                                 Community trust, partnerships, policy changes...
@@ -373,7 +374,7 @@
                     <input type="text" id="newContacts" required placeholder="e.g. Project Lead, Regional News Team" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red">
                 </div>
 
-                <!-- 3 & 4. Strategic Pillar & Content Area -->
+                <!-- 3 & 4. Strategic Pillar & Investment Area -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label class="block font-bold text-gray-700 mb-1">3. Strategic Pillar *</label>
@@ -384,15 +385,13 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block font-bold text-gray-700 mb-1">4. Content Area *</label>
+                        <label class="block font-bold text-gray-700 mb-1">4. Investment Area *</label>
                         <select id="newContentArea" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red bg-white">
-                            <option value="Local News">Local News</option>
-                            <option value="National / Regional News">National / Regional News</option>
-                            <option value="The North">The North</option>
                             <option value="International News">International News</option>
+                            <option value="Local News">Local News</option>
+                            <option value="The North">The North</option>
                             <option value="Sports">Sports</option>
                             <option value="Eurovision">Eurovision</option>
-                            <option value="Other">Other</option>
                         </select>
                     </div>
                 </div>
@@ -421,14 +420,14 @@
                     <input type="text" id="newDeliverables" required placeholder="https://www.cbc.ca/news/example-story" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red">
                 </div>
 
-                <!-- 9 & 10. Quantitative vs Qualitative Impact -->
+                <!-- 9 & 10. Tangible vs Intangible Impact -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block font-bold text-gray-700 mb-1">9. Quantitative Impact (Stats/Reach) *</label>
+                        <label class="block font-bold text-gray-700 mb-1">9. Tangible Impact *</label>
                         <textarea id="newQuant" rows="2" required placeholder="e.g. 650k unique readers, $450k grant secured, 120k views" class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red"></textarea>
                     </div>
                     <div>
-                        <label class="block font-bold text-gray-700 mb-1">10. Qualitative Impact (Trust/Policy) *</label>
+                        <label class="block font-bold text-gray-700 mb-1">10. Intangible Impact *</label>
                         <textarea id="newQual" rows="2" required placeholder="e.g. Deepened community trust, policy shift in assembly..." class="w-full p-2.5 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-cbc-red"></textarea>
                     </div>
                 </div>
@@ -450,72 +449,105 @@
     </footer>
 
     <script>
-        // Pre-loaded realistic sample data with GEOGRAPHY and QUANTITATIVE IMPACT as primary heroes
+        // Public value stories supplied for the repository
         let repositoryData = [
             {
-                id: "CBC-2026-001",
-                projectName: "North of 60: Northern Canada Climate Resilience Series",
-                contacts: "Project Lead, Northern News Team",
-                pillar: "Proximity",
-                contentArea: "The North",
-                geography: "Local: Yellowknife, NWT",
-                summary: "A three-week on-ground investigative reporting initiative documenting severe infrastructure risks caused by permafrost thawing across fly-in Arctic settlements.",
-                problem: "Isolated northern communities lacked accessible, localized reporting on permafrost degradation risks and traditional ecological adaptation strategies.",
-                deliverables: "https://www.cbc.ca/news/canada/north/example-climate-series-2026",
-                quantImpact: "650,000 unique digital readers; 120,000 video views; $450,000 territorial grant committed for community permafrost monitoring.",
-                qualImpact: "Deepened Indigenous community trust in 3 fly-in towns; territorial legislative assembly referenced reporting during policy debates."
-            },
-            {
-                id: "CBC-2026-002",
-                projectName: "Canada Reads 2026: Cross-Cultural National Broadcast",
-                contacts: "Project Lead, Production Team",
-                pillar: "Bringing People Together",
-                contentArea: "National / Regional News",
-                geography: "National: Canada-wide",
-                summary: "A coast-to-coast multi-platform literary debate unifying diverse Canadian voices around shared national narratives and cross-cultural literature.",
-                problem: "National cultural conversations often struggle to reach younger digital demographics across disparate geographical regions simultaneously.",
-                deliverables: "https://www.cbc.ca/books/canadareads-example-2026",
-                quantImpact: "1,200,000 live broadcast listeners; 18,000 books sold nationally within 14 days of broadcast.",
-                qualImpact: "Fostered nationwide cross-cultural dialogue; established 15 independent library discussion hubs in rural municipalities."
-            },
-            {
-                id: "CBC-2026-003",
-                projectName: "Atlantic Wildfire Emergency Coverage & Relief Portal",
-                contacts: "Project Lead, Atlantic News Team",
+                id: "CBC-2026-006",
+                contentAreaAsBox: true,
+                projectName: "Radio-Canada N.B. Power Disconnection Policy Investigation",
+                contacts: "Not specified",
                 pillar: "Proximity",
                 contentArea: "Local News",
-                geography: "Regional: Atlantic Canada",
-                summary: "Real-time emergency broadcast, interactive evacuation mapping, and localized community radio safety alerts during record regional forest fires.",
-                problem: "Fast-moving wildfire threats created severe information voids and evacuation route confusion across rural Atlantic communities.",
-                deliverables: "https://www.cbc.ca/news/canada/nova-scotia/example-wildfire-live",
-                quantImpact: "2,400,000 emergency portal pageviews; 85,000 active app users receiving push alerts in emergency zones.",
-                qualImpact: "Provided critical life-safety guidance credited by local emergency commanders for facilitating smooth municipal evacuations."
+                geography: "Regional: New Brunswick",
+                summary: "Investigative reporting featuring personal accounts from rural New Brunswick residents struggling with home heating costs.",
+                problem: "Rural households struggling with home heating costs faced winter power disconnections.",
+                deliverables: "No public link provided.",
+                quantImpact: "In-depth investigative reporting featuring personal accounts of rural Canadians struggling with home heating costs.",
+                qualImpact: "Direct policy change by N.B. Power, halting winter service disconnections for vulnerable households."
             },
             {
-                id: "CBC-2026-004",
-                projectName: "AI-Driven Multi-Language Captioning & Dialect Pilot",
-                contacts: "Project Lead, Digital Strategy Team",
+                id: "CBC-2026-007",
+                contentAreaAsBox: true,
+                projectName: "Décrypteurs AI Fake News & Media Impersonation Exposure",
+                contacts: "Not specified",
                 pillar: "Digital Agility",
-                contentArea: "Other",
-                geography: "National: Canada-wide",
-                summary: "Automated real-time speech-to-text platform accelerating regional news accessibility across Indigenous languages and official bilingual broadcasts.",
-                problem: "High cost and operational latency in providing real-time accessible captions for fast-breaking regional news broadcasts.",
-                deliverables: "https://www.cbc.ca/digital/tech-demo-captioning",
-                quantImpact: "Reduced translation turnaround by 40% across 8 regional news hubs; 94% verified captioning accuracy rate.",
-                qualImpact: "Significantly enhanced accessibility for hearing-impaired audiences and expanded multi-lingual regional audience reach."
+                contentArea: "Local News",
+                geography: "National / Digital",
+                summary: "An open-source digital investigation uncovered an AI-powered network of clone sites impersonating legitimate Canadian media.",
+                problem: "An AI-powered network of clone news sites was impersonating legitimate Canadian media outlets.",
+                deliverables: "No public link provided.",
+                quantImpact: "Open-source digital investigation uncovering an AI-powered network of clone news sites impersonating legitimate Canadian media outlets.",
+                qualImpact: "Meta intervened to block and dismantle the entire fraudulent network across its platforms, protecting Canada's digital media ecosystem."
             },
             {
-                id: "CBC-2026-005",
-                projectName: "Eurovision 2026 Mobile-First Cultural Experience",
-                contacts: "Project Lead, Entertainment and Sports Team",
-                pillar: "Digital Agility",
-                contentArea: "Eurovision",
-                geography: "International: Europe / Global",
-                summary: "Vertical video streaming series giving Canadian viewers exclusive technical production breakdowns and artist perspectives from Geneva.",
-                problem: "Traditional broadcast formats failed to engage younger mobile audiences seeking interactive, short-form event coverage.",
-                deliverables: "https://www.cbc.ca/pop/eurovision-2026-feature",
-                quantImpact: "3,100,000 social video views; 68% audience engagement rate among 18-34 year olds.",
-                qualImpact: "Established digital engagement blueprints for adapting international event coverage to next-generation Canadian streaming audiences."
+                id: "CBC-2026-008",
+                contentAreaAsBox: true,
+                projectName: "CBC News \"Fascist Fight Club\" Extremism Investigation",
+                contacts: "Not specified",
+                pillar: "Bringing People Together",
+                contentArea: "Local News",
+                geography: "National",
+                summary: "A multi-part visual investigative series exposed active white supremacist organizations in Canada.",
+                problem: "Active extremist organizations in Canada required public scrutiny and investigation.",
+                deliverables: "No public link provided.",
+                quantImpact: "Multi-part visual investigative series exposing active white supremacist organizations in Canada.",
+                qualImpact: "Prompted formal law enforcement and public authority investigations into extremist networks, contributing to public safety."
+            },
+            {
+                id: "CBC-2026-009",
+                contentAreaAsBox: true,
+                projectName: "Returning to Ulukhaktok — Inuvialuit Youth Cultural Heritage",
+                contacts: "Not specified",
+                pillar: ["Proximity", "Bringing People Together"],
+                contentArea: "The North",
+                geography: "Northern / Remote: Ulukhaktok, N.W.T.",
+                summary: "An original youth documentary followed six Inuvialuit youth connecting with their ancestral heritage and received two international Prix Jeunesse nominations.",
+                problem: "Inuvialuit youth sought connection with their ancestral heritage and greater representation of Northern Indigenous stories.",
+                deliverables: "No public link provided.",
+                quantImpact: "Original youth documentary following six Inuvialuit youth connecting with their ancestral heritage; nominated for two international Prix Jeunesse awards.",
+                qualImpact: "Fostered cultural continuity and pride among Indigenous youth while elevating Northern Indigenous stories onto the international stage."
+            },
+            {
+                id: "CBC-2026-010",
+                contentAreaAsBox: true,
+                projectName: "Manitoba Talks — Depolarization & Civic Dialogue",
+                contacts: "Not specified",
+                pillar: "Bringing People Together",
+                contentArea: "Local News",
+                geography: "Local / Regional: Winnipeg, MB",
+                summary: "An in-person community dialogue brought together two dozen residents with opposing political views.",
+                problem: "Polarized participants needed constructive opportunities to discuss divisive issues and find common ground.",
+                deliverables: "No public link provided.",
+                quantImpact: "In-person community dialogue event bringing together two dozen residents with opposing political views.",
+                qualImpact: "Built measurable social cohesion by facilitating constructive, face-to-face dialogue and helping polarized participants find common ground on divisive issues."
+            },
+            {
+                id: "CBC-2026-011",
+                contentAreaAsBox: true,
+                projectName: "On en jase & On veut savoir Community Engagement Tours",
+                contacts: "Not specified",
+                pillar: "Proximity",
+                contentArea: "Local News",
+                geography: "Regional: 10 Canadian Cities",
+                summary: "Nineteen live town halls in ten Canadian cities addressed cost of living, mental health, and immigration.",
+                problem: "Local residents needed direct input into Radio-Canada's editorial priorities and civic conversations.",
+                deliverables: "No public link provided.",
+                quantImpact: "Series of 19 live in-person town halls addressing critical civic topics (cost of living, mental health, immigration).",
+                qualImpact: "Deepened institutional trust and audience alignment by giving local residents direct input into Radio-Canada's editorial priorities."
+            },
+            {
+                id: "CBC-2026-012",
+                contentAreaAsBox: true,
+                projectName: "Public Spaces Incubator (PSI) Global Conflict Digital Forum",
+                contacts: "Not specified",
+                pillar: ["Digital Agility", "Bringing People Together"],
+                contentArea: "International News",
+                geography: "International / Digital",
+                summary: "An interactive digital forum connected over 330 Canadian participants directly with foreign correspondents covering the Middle East conflict.",
+                problem: "Citizens needed a safe, constructive alternative to toxic social media discussions to process complex geopolitical events.",
+                deliverables: "No public link provided.",
+                quantImpact: "Interactive digital forum connecting over 330 Canadian participants directly with foreign correspondents covering the Middle East conflict.",
+                qualImpact: "Provided a safe, constructive alternative to toxic social media comment sections, helping citizens process complex geopolitical events directly with verified journalists."
             }
         ];
 
@@ -556,6 +588,17 @@
                             </p>
                         </div>
 
+                        ${item.contentAreaAsBox ? `
+                            <div class="bg-slate-50 border border-slate-200 p-3 rounded-lg">
+                                <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider block mb-0.5">
+                                    <i class="fa-solid fa-layer-group text-slate-500"></i> Investment Area
+                                </span>
+                                <p class="text-xs font-semibold text-gray-900 leading-snug">
+                                    ${item.contentArea}
+                                </p>
+                            </div>
+                        ` : ''}
+
                         <!-- Description -->
                         <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">
                             ${item.summary}
@@ -566,12 +609,16 @@
                             <span class="story-chip bg-blue-50 text-cbc-accentBlue border border-blue-200 font-bold gap-1">
                                 <i class="fa-solid fa-location-dot"></i> ${item.geography}
                             </span>
-                            <span class="story-chip font-bold ${getPillarBadgeStyle(item.pillar)}">
-                                <i class="${getPillarIcon(item.pillar)} mr-1"></i>${item.pillar}
-                            </span>
-                            <span class="story-chip font-bold bg-gray-100 text-gray-700 border border-gray-200">
-                                ${item.contentArea}
-                            </span>
+                            ${getPillars(item.pillar).map(pillar => `
+                                <span class="story-chip font-bold ${getPillarBadgeStyle(pillar)}">
+                                    <i class="${getPillarIcon(pillar)} mr-1"></i>${pillar}
+                                </span>
+                            `).join('')}
+                            ${item.contentAreaAsBox ? '' : `
+                                <span class="story-chip font-bold bg-gray-100 text-gray-700 border border-gray-200" title="${item.contentArea}" aria-label="Content area: ${item.contentArea}">
+                                    ${item.contentArea}
+                                </span>
+                            `}
                         </div>
                     </div>
 
@@ -596,6 +643,11 @@
             }
         }
 
+        function getPillars(pillar) {
+            if (Array.isArray(pillar)) return pillar;
+            return String(pillar || '').split(/\s*&\s*/).filter(Boolean);
+        }
+
         function getPillarIcon(pillar) {
             switch(pillar) {
                 case 'Proximity': return 'fa-solid fa-bullseye';
@@ -608,7 +660,9 @@
         // Hero Stats Calculator
         function updateHeroStats(data) {
             const pillarCounts = data.reduce((counts, item) => {
-                counts[item.pillar] = (counts[item.pillar] || 0) + 1;
+                getPillars(item.pillar).forEach(pillar => {
+                    counts[pillar] = (counts[pillar] || 0) + 1;
+                });
                 return counts;
             }, {});
 
@@ -660,10 +714,15 @@
                     item.quantImpact.toLowerCase().includes(searchVal) ||
                     item.qualImpact.toLowerCase().includes(searchVal) ||
                     item.problem.toLowerCase().includes(searchVal) ||
-                    item.contacts.toLowerCase().includes(searchVal);
+                    item.contacts.toLowerCase().includes(searchVal) ||
+                    item.contentArea.toLowerCase().includes(searchVal) ||
+                    getPillars(item.pillar).some(pillar => pillar.toLowerCase().includes(searchVal));
 
-                const matchesGeo = (geoVal === 'All') || item.geography.startsWith(geoVal);
-                const matchesPillar = (pillarVal === 'All') || (item.pillar === pillarVal);
+                const geographyScopes = item.geography.split(':')[0].split('/').map(scope => scope.trim());
+                const matchesGeo = (geoVal === 'All') ||
+                    item.geography.startsWith(geoVal) ||
+                    geographyScopes.includes(geoVal);
+                const matchesPillar = (pillarVal === 'All') || getPillars(item.pillar).includes(pillarVal);
                 const matchesContent = (contentVal === 'All') || (item.contentArea === contentVal);
 
                 return matchesSearch && matchesGeo && matchesPillar && matchesContent;
@@ -697,9 +756,11 @@
             document.getElementById('modalTitle').innerText = item.projectName;
             document.getElementById('modalGeoText').innerText = item.geography;
             
-            document.getElementById('modalPillarText').innerText = item.pillar;
-            document.getElementById('modalPillarIcon').className = `${getPillarIcon(item.pillar)} mr-1`;
-            document.getElementById('modalPillarBadge').className = `story-chip font-bold ${getPillarBadgeStyle(item.pillar)}`;
+            document.getElementById('modalPillarBadges').innerHTML = getPillars(item.pillar).map(pillar => `
+                <span class="story-chip font-bold ${getPillarBadgeStyle(pillar)}">
+                    <i class="${getPillarIcon(pillar)} mr-1"></i>${pillar}
+                </span>
+            `).join('');
             
             document.getElementById('modalCategoryBadge').innerText = item.contentArea;
             document.getElementById('modalQuantImpact').innerText = item.quantImpact;
@@ -728,8 +789,12 @@
         function handleNewSubmission(event) {
             event.preventDefault();
 
+            const nextSequence = repositoryData.reduce((highest, entry) => {
+                const match = entry.id.match(/^CBC-2026-(\d+)$/);
+                return match ? Math.max(highest, Number(match[1])) : highest;
+            }, 0) + 1;
             const newEntry = {
-                id: `CBC-2026-00${repositoryData.length + 1}`,
+                id: `CBC-2026-${String(nextSequence).padStart(3, '0')}`,
                 projectName: document.getElementById('newProjectName').value,
                 contacts: document.getElementById('newContacts').value,
                 pillar: document.getElementById('newPillar').value,
