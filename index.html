@@ -296,7 +296,7 @@
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Quantitative Impact Box -->
-                        <div class="bg-emerald-50/80 border border-emerald-200 p-4 rounded-xl space-y-1.5">
+                        <div id="modalQuantImpactBox" class="bg-emerald-50/80 border border-emerald-200 p-4 rounded-xl space-y-1.5">
                             <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1">
                                 <i class="fa-solid fa-hashtag"></i> Tangible Impact
                             </span>
@@ -449,107 +449,107 @@
     </footer>
 
     <script>
-        // Public value stories supplied for the repository
-        let repositoryData = [
-            {
-                id: "CBC-2026-006",
-                contentAreaAsBox: true,
-                projectName: "Radio-Canada N.B. Power Disconnection Policy Investigation",
-                contacts: "Not specified",
-                pillar: "Proximity",
-                contentArea: "Local News",
-                geography: "Regional: New Brunswick",
-                summary: "Investigative reporting featuring personal accounts from rural New Brunswick residents struggling with home heating costs.",
-                problem: "Rural households struggling with home heating costs faced winter power disconnections.",
-                deliverables: "No public link provided.",
-                quantImpact: "In-depth investigative reporting featuring personal accounts of rural Canadians struggling with home heating costs.",
-                qualImpact: "Direct policy change by N.B. Power, halting winter service disconnections for vulnerable households."
-            },
-            {
-                id: "CBC-2026-007",
-                contentAreaAsBox: true,
-                projectName: "Décrypteurs AI Fake News & Media Impersonation Exposure",
-                contacts: "Not specified",
-                pillar: "Digital Agility",
-                contentArea: "Local News",
-                geography: "National / Digital",
-                summary: "An open-source digital investigation uncovered an AI-powered network of clone sites impersonating legitimate Canadian media.",
-                problem: "An AI-powered network of clone news sites was impersonating legitimate Canadian media outlets.",
-                deliverables: "No public link provided.",
-                quantImpact: "Open-source digital investigation uncovering an AI-powered network of clone news sites impersonating legitimate Canadian media outlets.",
-                qualImpact: "Meta intervened to block and dismantle the entire fraudulent network across its platforms, protecting Canada's digital media ecosystem."
-            },
-            {
-                id: "CBC-2026-008",
-                contentAreaAsBox: true,
-                projectName: "CBC News \"Fascist Fight Club\" Extremism Investigation",
-                contacts: "Not specified",
-                pillar: "Bringing People Together",
-                contentArea: "Local News",
-                geography: "National",
-                summary: "A multi-part visual investigative series exposed active white supremacist organizations in Canada.",
-                problem: "Active extremist organizations in Canada required public scrutiny and investigation.",
-                deliverables: "No public link provided.",
-                quantImpact: "Multi-part visual investigative series exposing active white supremacist organizations in Canada.",
-                qualImpact: "Prompted formal law enforcement and public authority investigations into extremist networks, contributing to public safety."
-            },
-            {
-                id: "CBC-2026-009",
-                contentAreaAsBox: true,
-                projectName: "Returning to Ulukhaktok — Inuvialuit Youth Cultural Heritage",
-                contacts: "Not specified",
-                pillar: ["Proximity", "Bringing People Together"],
-                contentArea: "The North",
-                geography: "Northern / Remote: Ulukhaktok, N.W.T.",
-                summary: "An original youth documentary followed six Inuvialuit youth connecting with their ancestral heritage and received two international Prix Jeunesse nominations.",
-                problem: "Inuvialuit youth sought connection with their ancestral heritage and greater representation of Northern Indigenous stories.",
-                deliverables: "No public link provided.",
-                quantImpact: "Original youth documentary following six Inuvialuit youth connecting with their ancestral heritage; nominated for two international Prix Jeunesse awards.",
-                qualImpact: "Fostered cultural continuity and pride among Indigenous youth while elevating Northern Indigenous stories onto the international stage."
-            },
-            {
-                id: "CBC-2026-010",
-                contentAreaAsBox: true,
-                projectName: "Manitoba Talks — Depolarization & Civic Dialogue",
-                contacts: "Not specified",
-                pillar: "Bringing People Together",
-                contentArea: "Local News",
-                geography: "Local / Regional: Winnipeg, MB",
-                summary: "An in-person community dialogue brought together two dozen residents with opposing political views.",
-                problem: "Polarized participants needed constructive opportunities to discuss divisive issues and find common ground.",
-                deliverables: "No public link provided.",
-                quantImpact: "In-person community dialogue event bringing together two dozen residents with opposing political views.",
-                qualImpact: "Built measurable social cohesion by facilitating constructive, face-to-face dialogue and helping polarized participants find common ground on divisive issues."
-            },
-            {
-                id: "CBC-2026-011",
-                contentAreaAsBox: true,
-                projectName: "On en jase & On veut savoir Community Engagement Tours",
-                contacts: "Not specified",
-                pillar: "Proximity",
-                contentArea: "Local News",
-                geography: "Regional: 10 Canadian Cities",
-                summary: "Nineteen live town halls in ten Canadian cities addressed cost of living, mental health, and immigration.",
-                problem: "Local residents needed direct input into Radio-Canada's editorial priorities and civic conversations.",
-                deliverables: "No public link provided.",
-                quantImpact: "Series of 19 live in-person town halls addressing critical civic topics (cost of living, mental health, immigration).",
-                qualImpact: "Deepened institutional trust and audience alignment by giving local residents direct input into Radio-Canada's editorial priorities."
-            },
-            {
-                id: "CBC-2026-012",
-                contentAreaAsBox: true,
-                projectName: "Public Spaces Incubator (PSI) Global Conflict Digital Forum",
-                contacts: "Not specified",
-                pillar: ["Digital Agility", "Bringing People Together"],
-                contentArea: "International News",
-                geography: "International / Digital",
-                summary: "An interactive digital forum connected over 330 Canadian participants directly with foreign correspondents covering the Middle East conflict.",
-                problem: "Citizens needed a safe, constructive alternative to toxic social media discussions to process complex geopolitical events.",
-                deliverables: "No public link provided.",
-                quantImpact: "Interactive digital forum connecting over 330 Canadian participants directly with foreign correspondents covering the Middle East conflict.",
-                qualImpact: "Provided a safe, constructive alternative to toxic social media comment sections, helping citizens process complex geopolitical events directly with verified journalists."
-            }
-        ];
+       // Public value stories supplied for the repository (Verified against 2025-2026 Annual Report)
+let repositoryData = [
+    {
+        id: "CBC-2026-006",
+        contentAreaAsBox: true,
+        projectName: "Radio-Canada N.B. Power Disconnection Policy Investigation",
+        contacts: "Not specified",
+        pillar: "Proximity",
+        contentArea: "Local News",
+        geography: "Regional: New Brunswick",
+        summary: "Investigative reporting featuring personal accounts from rural New Brunswick residents struggling with home heating costs.",
+        problem: "Rural households struggling with home heating costs faced winter power disconnections.",
+        deliverables: "No public link provided.",
+        quantImpact: "Pending employee intake submission (Specific household figures not published in annual report).",
+        qualImpact: "Direct policy change by N.B. Power, halting winter service disconnections for vulnerable households."
+    },
+    {
+        id: "CBC-2026-007",
+        contentAreaAsBox: true,
+        projectName: "Décrypteurs AI Fake News & Media Impersonation Exposure",
+        contacts: "Not specified",
+        pillar: "Digital Agility",
+        contentArea: "Local News",
+        geography: "National / Digital",
+        summary: "An open-source digital investigation uncovered an AI-powered network of clone sites impersonating legitimate Canadian media.",
+        problem: "An AI-powered network of clone news sites was impersonating legitimate Canadian media outlets.",
+        deliverables: "No public link provided.",
+        quantImpact: "Pending employee intake submission (Network scale metrics pending internal intake).",
+        qualImpact: "Meta intervened directly to block and dismantle the entire fraudulent network across its platforms, protecting Canada's digital media ecosystem."
+    },
+    {
+        id: "CBC-2026-008",
+        contentAreaAsBox: true,
+        projectName: "CBC News \"Fascist Fight Club\" Extremism Investigation",
+        contacts: "Not specified",
+        pillar: "Bringing People Together",
+        contentArea: "Local News",
+        geography: "National",
+        summary: "A multi-part visual investigative series exposed active white supremacist organizations in Canada.",
+        problem: "Active extremist organizations in Canada required public scrutiny and investigation.",
+        deliverables: "No public link provided.",
+        quantImpact: "Pending employee intake submission (Broadcast and digital series reach pending internal intake).",
+        qualImpact: "Prompted formal law enforcement and public authority investigations into extremist networks, contributing to public safety."
+    },
+    {
+        id: "CBC-2026-009",
+        contentAreaAsBox: true,
+        projectName: "Returning to Ulukhaktok — Inuvialuit Youth Cultural Heritage",
+        contacts: "Not specified",
+        pillar: ["Proximity", "Bringing People Together"],
+        contentArea: "The North",
+        geography: "Northern / Remote: Ulukhaktok, N.W.T.",
+        summary: "An original youth documentary followed six Inuvialuit youth connecting with their ancestral heritage and received two international Prix Jeunesse nominations.",
+        problem: "Inuvialuit youth sought connection with their ancestral heritage and greater representation of Northern Indigenous stories.",
+        deliverables: "No public link provided.",
+        quantImpact: "6 Inuvialuit children participated; nominated for 2 international Prix Jeunesse awards.",
+        qualImpact: "Fostered cultural continuity and pride among Indigenous youth while elevating Northern Indigenous stories onto the international stage."
+    },
+    {
+        id: "CBC-2026-010",
+        contentAreaAsBox: true,
+        projectName: "Manitoba Talks — Depolarization & Civic Dialogue",
+        contacts: "Not specified",
+        pillar: "Bringing People Together",
+        contentArea: "Local News",
+        geography: "Local / Regional: Winnipeg, MB",
+        summary: "An in-person community dialogue brought together two dozen residents with opposing political views.",
+        problem: "Polarized participants needed constructive opportunities to discuss divisive issues and find common ground.",
+        deliverables: "No public link provided.",
+        quantImpact: "24 participants (two dozen people with opposing viewpoints) engaged in Winnipeg.",
+        qualImpact: "Built measurable social cohesion by facilitating constructive, face-to-face dialogue and helping polarized participants find common ground on divisive issues."
+    },
+    {
+        id: "CBC-2026-011",
+        contentAreaAsBox: true,
+        projectName: "On en jase & On veut savoir Community Engagement Tours",
+        contacts: "Not specified",
+        pillar: "Proximity",
+        contentArea: "Local News",
+        geography: "Regional: 10 Canadian Cities",
+        summary: "Nine On en jase in-person events and On veut savoir events in 10 cities addressed cost of living, mental health, immigration, and francophonie.",
+        problem: "Local residents needed direct input into Radio-Canada's editorial priorities and civic conversations.",
+        deliverables: "No public link provided.",
+        quantImpact: "9 On en jase in-person events executed; On veut savoir events hosted across 10 cities.",
+        qualImpact: "Deepened institutional trust and audience alignment by giving local residents direct input into Radio-Canada's editorial priorities."
+    },
+    {
+        id: "CBC-2026-012",
+        contentAreaAsBox: true,
+        projectName: "Public Spaces Incubator (PSI) Global Conflict Digital Forum",
+        contacts: "Not specified",
+        pillar: ["Digital Agility", "Bringing People Together"],
+        contentArea: "International News",
+        geography: "International / Digital",
+        summary: "An interactive digital forum connected over 330 Canadian participants directly with foreign correspondents covering the Middle East conflict.",
+        problem: "Citizens needed a safe, constructive alternative to toxic social media discussions to process complex geopolitical events.",
+        deliverables: "No public link provided.",
+        quantImpact: "330+ participants joined the digital forum with Radio-Canada journalists.",
+        qualImpact: "Provided a safe, constructive alternative to toxic social media comment sections, helping citizens process complex geopolitical events directly with verified journalists."
+    }
+];
 
         // Render Repository UI
         function renderRepository(data) {
@@ -579,25 +579,14 @@
                         </h3>
 
                         <!-- Tangible Impact -->
-                        <div class="bg-emerald-50/80 border border-emerald-200 p-3 rounded-lg">
+                        ${item.quantImpact ? `<div class="bg-emerald-50/80 border border-emerald-200 p-3 rounded-lg">
                             <span class="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wider block mb-0.5">
                                 <i class="fa-solid fa-chart-line text-emerald-600"></i> Tangible Impact
                             </span>
                             <p class="text-xs font-bold text-gray-900 line-clamp-2 leading-snug">
                                 ${item.quantImpact}
                             </p>
-                        </div>
-
-                        ${item.contentAreaAsBox ? `
-                            <div class="bg-slate-50 border border-slate-200 p-3 rounded-lg">
-                                <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider block mb-0.5">
-                                    <i class="fa-solid fa-layer-group text-slate-500"></i> Investment Area
-                                </span>
-                                <p class="text-xs font-semibold text-gray-900 leading-snug">
-                                    ${item.contentArea}
-                                </p>
-                            </div>
-                        ` : ''}
+                        </div>` : ''}
 
                         <!-- Description -->
                         <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">
@@ -614,11 +603,9 @@
                                     <i class="${getPillarIcon(pillar)} mr-1"></i>${pillar}
                                 </span>
                             `).join('')}
-                            ${item.contentAreaAsBox ? '' : `
-                                <span class="story-chip font-bold bg-gray-100 text-gray-700 border border-gray-200" title="${item.contentArea}" aria-label="Content area: ${item.contentArea}">
-                                    ${item.contentArea}
-                                </span>
-                            `}
+                            <span class="story-chip font-bold bg-gray-100 text-gray-700 border border-gray-200" title="Investment area: ${item.contentArea}" aria-label="Investment area: ${item.contentArea}">
+                                <i class="fa-solid fa-layer-group text-gray-500 mr-1"></i>${item.contentArea}
+                            </span>
                         </div>
                     </div>
 
@@ -764,6 +751,7 @@
             
             document.getElementById('modalCategoryBadge').innerText = item.contentArea;
             document.getElementById('modalQuantImpact').innerText = item.quantImpact;
+            document.getElementById('modalQuantImpactBox').classList.toggle('hidden', !item.quantImpact);
             document.getElementById('modalQualImpact').innerText = item.qualImpact;
             
             document.getElementById('modalSummary').innerText = item.summary;
